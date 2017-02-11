@@ -27,3 +27,10 @@
 *.exe
 *.out
 *.app
+
+# dossier
+bin/
+build/
+
+# truc spécifiques QtCreator
+*.user

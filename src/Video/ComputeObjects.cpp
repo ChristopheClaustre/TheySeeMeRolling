@@ -16,18 +16,18 @@ int ComputeObjects::startCompute()
     if(!m_cap.isOpened())  // check if we succeeded
         return -1;
 
-    Mat frame,greyFrame,fgimg,background,diffimg,tresh;
+    Mat frame,fgimg,background,diffimg;
     BackgroundSubtractorMOG2 bg(300,36);
     vector <vector<Point>> contours;
 
     vector<Point> ptsDetected;
-    int radius = 50;
+
     int frameCount = 0;
     int objectCount = 0;
-//  int radiusCarre = radius*radius;
+//    int radius = 50;
+//    int radiusCarre = radius*radius;
 //    vector<int> labels;
 //    Mat1b gray;
-    namedWindow("Film");
     cout << "Computing...";
     for(;;)
     {
@@ -50,10 +50,6 @@ int ComputeObjects::startCompute()
 
         findContours(diffimg,contours,CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
         drawContours(diffimg,contours,-1,255,1);
-
-//        Size originaleSize = diffimg.size();
-//        Size size(100,100);//the dst image size,e.g.100x100
-//        resize(diffimg,diffimg,size);//resize image
 
         int count = countNonZero(diffimg);
 
@@ -90,20 +86,19 @@ int ComputeObjects::startCompute()
 //                Rect box = boundingRect(contours[i]);
 //                rectangle(frame,box,Scalar(0,0,255));
 //            }
-            imshow("Film", frame);
         }
         frameCount++;
         cout << "." << flush;
-        if(waitKey(30) >= 0) break;
     }
+    m_cap.release();
 
-    for(VideoObject vo : m_listeObjects)
+    for(vector<VideoObject>::iterator it = m_listeObjects.begin();it < m_listeObjects.end(); ++it)
     {
         Point3_<int> vitesse(0,0,0);
-        vo.m_listeVecteurVitesse.push_back(vitesse);
-        for(int i=1; i < vo.m_listeCoordonnees.size();i++)
+        it->m_listeVecteurVitesse.push_back(vitesse);
+        for(int i=1; i < it->m_listeCoordonnees.size();i++)
         {
-            vo.m_listeVecteurVitesse.push_back(vo.m_listeCoordonnees[i]-vo.m_listeCoordonnees[i-1]);
+            it->m_listeVecteurVitesse.push_back(it->m_listeCoordonnees[i]-it->m_listeCoordonnees[i-1]);
         }
     }
     return 0;

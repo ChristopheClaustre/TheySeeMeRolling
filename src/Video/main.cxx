@@ -11,9 +11,11 @@ using namespace Video;
 int main()
 {
     cout << "Video world!" << endl;
-    VideoCapture cap("../misc/TheySeeMe2.avi");
+    VideoCapture PreCap("../misc/TheySeeMe2.avi");
+    if(!PreCap.isOpened())  // check if we succeeded
+        return -1;
 
-    ComputeObjects co(cap);
+    ComputeObjects co(PreCap);
     co.startCompute();
 
     int size = co.m_listeObjects[0].m_listeCoordonnees.size();
@@ -30,16 +32,16 @@ int main()
     }
 
 
-//    namedWindow("Film");
-//    namedWindow("Background");
-//    for(;;)
-//    {
-//        cap >> frame; // get a new frame from camera
+    VideoCapture cap("../misc/TheySeeMe2.avi");
+    Mat frame;
+    namedWindow("Film");
+    for(;;)
+    {
+        cap >> frame; // get a new frame from camera
 
-//        imshow("Film", frame);
-//        imshow("Background", diffimg);
-//        if(waitKey(30) >= 0) break;
-//    }
+        imshow("Film", frame);
+        if(waitKey(30) >= 0) break;
+    }
     // the camera will be deinitialized automatically in VideoCapture destructor
     return 0;
 }

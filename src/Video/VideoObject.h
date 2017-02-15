@@ -8,12 +8,6 @@ using namespace std;
 
 namespace Video
 {
-    struct Point3D{
-        int x;
-        int y;
-        int z;
-    };
-
     class VideoObject
     {
     public:
@@ -21,8 +15,8 @@ namespace Video
         ~VideoObject();
     public:
 
-        vector<Point3D> m_listeCoordonnees;
-        vector<Point3D> m_listeVecteurVitesse;
+        vector<Point3_<int>> m_listeCoordonnees;
+        vector<Point3_<int>> m_listeVecteurVitesse;
         int m_firstFrame;
 
     }; // class VideoObject

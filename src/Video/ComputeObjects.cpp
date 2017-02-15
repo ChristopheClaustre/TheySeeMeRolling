@@ -3,7 +3,7 @@
 namespace Video
 {
 
-ComputeObjects:ComputeObjects(VideoCapture cap):m_cap(cap)
+ComputeObjects::ComputeObjects(VideoCapture cap):m_cap(cap)
 {
 }
 
@@ -11,9 +11,9 @@ ComputeObjects::~ComputeObjects()
 {
 }
 
-void ComputeObjects::startCompute()
+int ComputeObjects::startCompute()
 {
-    if(!cap.isOpened())  // check if we succeeded
+    if(!m_cap.isOpened())  // check if we succeeded
         return -1;
 
     Mat frame,greyFrame,fgimg,background,diffimg,tresh;
@@ -27,10 +27,12 @@ void ComputeObjects::startCompute()
 //  int radiusCarre = radius*radius;
 //    vector<int> labels;
 //    Mat1b gray;
-
+    namedWindow("Film");
+    cout << "Computing...";
     for(;;)
     {
-        cap >> frame; // get a new frame from camera
+        m_cap >> frame; // get a new frame from camera
+        if(frame.empty()) break;
         bg.operator ()(frame,fgimg);
         //On recupere le background
         bg.getBackgroundImage(background);
@@ -66,9 +68,9 @@ void ComputeObjects::startCompute()
             }
             objectCount = 1;
             Rect box = boundingRect(ptsDetected);
-            Point3D newPoint;
-            newPoint.x = box.tl.x + box.width()/2;
-            newPoint.y = box.tl.y + box.height()/2;
+            Point3_<int> newPoint;
+            newPoint.x = box.x + box.width/2;
+            newPoint.y = box.y + box.height/2;
             newPoint.z = box.area();
             m_listeObjects[0].m_listeCoordonnees.push_back(newPoint);
 
@@ -88,23 +90,23 @@ void ComputeObjects::startCompute()
 //                Rect box = boundingRect(contours[i]);
 //                rectangle(frame,box,Scalar(0,0,255));
 //            }
+            imshow("Film", frame);
         }
         frameCount++;
+        cout << "." << flush;
         if(waitKey(30) >= 0) break;
     }
 
-//    for(VideoObject vo : m_listeObjects)
-//    {
-//        Point3D vitesse;
-//        vitesse.x = 0;
-//        vitesse.y = 0;
-//        vitesse.z = 0;
-//        vo.m_listeVecteurVitesse[0] = vitesse;
-//        for(int i=1; i < vo.m_listeVecteurVitesse.size();i++)
-//        {
-//            vo.m_listeVecteurVitesse[i].push_back(vo.
-//        }
-//    }
+    for(VideoObject vo : m_listeObjects)
+    {
+        Point3_<int> vitesse(0,0,0);
+        vo.m_listeVecteurVitesse.push_back(vitesse);
+        for(int i=1; i < vo.m_listeCoordonnees.size();i++)
+        {
+            vo.m_listeVecteurVitesse.push_back(vo.m_listeCoordonnees[i]-vo.m_listeCoordonnees[i-1]);
+        }
+    }
+    return 0;
 }
 
 

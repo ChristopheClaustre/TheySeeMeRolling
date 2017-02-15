@@ -6,8 +6,8 @@ namespace Video
 
 VideoObject::VideoObject(int firstFrame) :
     m_firstFrame(firstFrame),
-    m_firstFrame(nullptr),
-    m_listeVecteurVitesse(nullptr)
+    m_listeCoordonnees(),
+    m_listeVecteurVitesse()
 
 {
 }

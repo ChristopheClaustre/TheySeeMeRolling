@@ -6,6 +6,12 @@ project(TheySeeMeRolling)
 
 find_package( OpenCV REQUIRED )
 find_package( OpenAL REQUIRED )
+find_package( Qt5Widgets REQUIRED )
+find_package( Qt5Test REQUIRED )
+find_package( Qt5Core REQUIRED )
+find_package( Qt5Gui REQUIRED )
+find_package( Qt5Concurrent REQUIRED )
+find_package( Qt5OpenGL REQUIRED )
 
 add_subdirectory(src)
 

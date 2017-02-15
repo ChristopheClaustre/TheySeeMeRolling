@@ -12,20 +12,22 @@ int main()
 {
     cout << "Video world!" << endl;
     VideoCapture cap("../misc/TheySeeMe2.avi");
-    if(!cap.isOpened())  // check if we succeeded
-        return -1;
 
     ComputeObjects co(cap);
     co.startCompute();
 
     int size = co.m_listeObjects[0].m_listeCoordonnees.size();
     cout << size << endl;
-//    for(int i =0;i<size;++i)
-//    {
-//        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].x<< " " ;
-//        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].y<< " " ;
-//        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].z<< endl;
-//    }
+    for(int i =0;i<size;++i)
+    {
+        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].x<< " " ;
+        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].y<< " " ;
+        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].z<< endl;
+        std::cout << "Vitesse : ";
+        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].x<< " " ;
+        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].y<< " " ;
+        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].z<< endl;
+    }
 
 
 //    namedWindow("Film");

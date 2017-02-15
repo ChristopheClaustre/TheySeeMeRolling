@@ -16,7 +16,7 @@ namespace Video
         ComputeObjects(VideoCapture cap);
         ~ComputeObjects();
 
-        void startCompute();
+        int startCompute();
     public:
 
         VideoCapture m_cap;

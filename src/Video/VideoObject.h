@@ -11,6 +11,7 @@ namespace Video
     class VideoObject
     {
     public:
+        VideoObject();
         VideoObject(int firstFrame);
         ~VideoObject();
     public:
@@ -18,6 +19,7 @@ namespace Video
         vector<Point3_<int>> m_listeCoordonnees;
         vector<Point3_<int>> m_listeVecteurVitesse;
         int m_firstFrame;
+        int m_lastFrame;
 
     }; // class VideoObject
 

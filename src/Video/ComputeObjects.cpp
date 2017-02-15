@@ -64,10 +64,7 @@ int ComputeObjects::startCompute()
             }
             objectCount = 1;
             Rect box = boundingRect(ptsDetected);
-            Point3_<int> newPoint;
-            newPoint.x = box.x + box.width/2;
-            newPoint.y = box.y + box.height/2;
-            newPoint.z = box.area();
+            Point3_<int> newPoint(box.x + box.width/2,box.y + box.height/2,box.area());
             m_listeObjects[0].m_listeCoordonnees.push_back(newPoint);
 
 //            //Cette partie de programme est utile pour le multi objects (NON IMPLEMENTE)
@@ -87,6 +84,15 @@ int ComputeObjects::startCompute()
 //                rectangle(frame,box,Scalar(0,0,255));
 //            }
         }
+        else
+        {
+            if(objectCount == 1)
+            {
+                m_listeObjects[0].m_lastFrame = count;
+            }
+        }
+
+
         frameCount++;
         cout << "." << flush;
     }

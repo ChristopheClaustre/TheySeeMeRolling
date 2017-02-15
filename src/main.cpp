@@ -31,11 +31,11 @@ int main()
     VideoCapture cap("../misc/TheySeeMe2.avi");
 
     //Initialisation audio
-    ALfloat listenerPos[] = {cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2, cap.get(CV_CAP_PROP_FRAME_WIDTH)/2, 0.0};
+    ALfloat listenerPos[] = {(ALfloat)cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0, (ALfloat)cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0, 0.0};
     Audio::OpenAL::getInstance()->initialize(listenerPos);
 
     //Loading of the WAVE file
-    Audio::Wave wave("TheySeeMeRolling-Short.wav");
+    Audio::Wave wave("TheySeeMeRolling-Short-mono.wav");
     wave.load();
     wave.createBuffer();
 
@@ -45,61 +45,89 @@ int main()
     Mat frame;
     int frameCount =0;
     namedWindow("Film");
-    for(;;)
+    bool reponse,stop;
+    while(!stop)
     {
-        cap >> frame; // get a new frame from camera
-
-
-        for(int i =0 ; i < nombreObject ;i++)
+        reponse = false;
+        stop = false;
+        for(;;)
         {
-            int frameFromBeginObject = frameCount - co.m_listeObjects[i].m_firstFrame;
-            int frameFromEndObject = frameCount - co.m_listeObjects[i].m_lastFrame;
-            if(frameFromBeginObject == 0)
+            cap >> frame; // get a new frame from camera
+            if(frame.empty()) break;
+            for(int i =0 ; i < nombreObject ;i++)
             {
-                //Apparition de l'objet
+                int frameFromBeginObject = frameCount - co.m_listeObjects[i].m_firstFrame;
+                int frameFromEndObject = frameCount - co.m_listeObjects[i].m_lastFrame;
+                if(frameFromBeginObject == 0)
+                {
+                    //Apparition de l'objet
 
-                source.play();
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
+                    source.play();
+                    ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000};
+                    ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
-                source.setPosition(positionObjet);
-                source.setVelocity(velociteObjet);
+                    source.setPosition(positionObjet);
+                    source.setVelocity(velociteObjet);
+                }
+                else if(frameFromEndObject == 0)
+                {
+                    //Disparition de l'objet
+                    ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0};
+                    ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
+
+                    source.setPosition(positionObjet);
+                    source.setVelocity(velociteObjet);
+                    source.stop();
+                }
+                else if(frameFromBeginObject > 0 && frameFromEndObject < 0)
+                {
+    //                std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].y<< " " ;
+    //                std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].x<< " " ;
+    //                std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].z/160000.0<< endl;
+
+
+                    ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0};
+                    ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                               (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
+
+                    source.setPosition(positionObjet);
+                    source.setVelocity(velociteObjet);
+                }
+                frameCount++;
             }
-            else if(frameFromEndObject == 0)
-            {
-                //Disparition de l'objet
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
-
-                source.setPosition(positionObjet);
-                source.setVelocity(velociteObjet);
-                source.stop();
-            }
-            else if(frameFromBeginObject > 0 && frameFromEndObject < 0)
-            {
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
-
-                source.setPosition(positionObjet);
-                source.setVelocity(velociteObjet);
-            }
-            frameCount++;
+            imshow("Film", frame);
+            if(waitKey(30) >= 0) break;
         }
-        imshow("Film", frame);
-        if(waitKey(30) >= 0) break;
-    }
 
+        //Boucle de rejeu
+        while(!reponse)
+        {
+            char rep;
+            cout << "Encore ? (y or N)" << endl;
+            cin >> rep;
+            if(rep  == 'y')
+            {
+                reponse=true;
+                cap.set(CV_CAP_PROP_POS_AVI_RATIO,0);
+            }
+            else if(rep  == 'N')
+            {
+                reponse=true;
+                stop=true;
+            }
+        }
+    }
+    delete Audio::OpenAL::getInstance();
     return 0;
 }

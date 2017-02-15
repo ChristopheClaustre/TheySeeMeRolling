@@ -52,47 +52,45 @@ int main()
 
         for(int i =0 ; i < nombreObject ;i++)
         {
-            int frameBeginObject = frameCount - co.m_listeObjects[i].m_firstFrame;
-            int frameEndObject = frameCount - co.m_listeObjects[i].m_lastFrame;
-            cout << frameBeginObject << endl << flush;
-            if(frameBeginObject == 0)
+            int frameFromBeginObject = frameCount - co.m_listeObjects[i].m_firstFrame;
+            int frameFromEndObject = frameCount - co.m_listeObjects[i].m_lastFrame;
+            if(frameFromBeginObject == 0)
             {
                 //Apparition de l'objet
 
                 source.play();
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].z};
+                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
+                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                 source.setPosition(positionObjet);
                 source.setVelocity(velociteObjet);
             }
-            else if(frameEndObject == 0)
+            else if(frameFromEndObject == 0)
             {
                 //Disparition de l'objet
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].z};
+                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
+                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                 source.setPosition(positionObjet);
                 source.setVelocity(velociteObjet);
                 source.stop();
             }
-            else if(frameBeginObject > 0 && frameEndObject < 0)
+            else if(frameFromBeginObject > 0 && frameFromEndObject < 0)
             {
-                //Mise à jour
-                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameBeginObject].z};
-                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].x,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].y,
-                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameBeginObject].z};
+                ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z};
+                ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
+                                           (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                 source.setPosition(positionObjet);
                 source.setVelocity(velociteObjet);

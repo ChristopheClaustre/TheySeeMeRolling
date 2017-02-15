@@ -88,7 +88,8 @@ int ComputeObjects::startCompute()
         {
             if(objectCount == 1)
             {
-                m_listeObjects[0].m_lastFrame = count;
+                m_listeObjects[0].m_lastFrame = frameCount;
+                objectCount = 0;
             }
         }
 

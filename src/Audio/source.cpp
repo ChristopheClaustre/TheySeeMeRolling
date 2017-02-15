@@ -42,6 +42,18 @@ void Source::setGain(ALfloat gain) {
     alSourcef(id_source, AL_GAIN, gain);
 }
 
+void Source::setRolloffFactor(ALfloat factor) {
+    alSourcef(id_source, AL_ROLLOFF_FACTOR, factor);
+}
+
+void Source::setMaxDistance(ALfloat max) {
+    alSourcef(id_source, AL_MAX_DISTANCE, max);
+}
+
+void Source::setReferenceDistance(ALfloat reference) {
+    alSourcef(id_source, AL_REFERENCE_DISTANCE, reference);
+}
+
 void Source::setLooping(ALenum looping) {
     Utils::CHECK_ERRORS(looping != AL_FALSE && looping != AL_TRUE, "incorrect value for looping attribute");
     alSourcei(id_source, AL_LOOPING, looping);

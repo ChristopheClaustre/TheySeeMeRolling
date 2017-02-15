@@ -19,24 +19,21 @@ int main(int argc, char *argv[])
     wave.createBuffer();
 
     Audio::Source source(wave.getIdBuffer());
-    source.setGain(0.3);
+    source.setGain(0.5f);
+    source.setRolloffFactor(1); // degré d'atténuation
+    source.setMaxDistance(20.0); // distance maximal ou la source est audible
+    source.setReferenceDistance(5); // distance à partir de laquelle le rolloff_factor et la max distance influt vraiment
     source.play();
 
-    ALfloat position[] = {-4.0, 0.0, 1.0};
+    ALfloat position[] = {-20.0, 0.0, 0.0};
 
-    float delta = 0.5;
     std::chrono::milliseconds timespan(int(100));
-//    alSourcef(source.getIdSource(), AL_REFERENCE_DISTANCE, 1.5);
-//    alSourcef(source.getIdSource(), AL_MAX_DISTANCE, 2.5);
-//    alSourcei(source.getIdSource(), AL_SOURCE_TYPE, AL_STREAMING);
 
-    for (float i = -20; i < 20; i+=delta) {
+    float i = -20;
+    while(source.getState() == AL_PLAYING) {
+        i+=0.5;
         position[0] = i;
         source.setPosition(position);
-        std::this_thread::sleep_for(timespan);
-    }
-
-    while(source.getState() == AL_PLAYING) {
         std::this_thread::sleep_for(timespan);
     }
 

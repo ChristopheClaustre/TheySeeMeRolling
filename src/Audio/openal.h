@@ -22,7 +22,7 @@ class OpenAL
 public:
     static OpenAL * getInstance();
 
-    void initialize(ALfloat position[]);// = {0.0, 0.0, 0.0});
+    void initialize(ALfloat position[]);
 
     ~OpenAL();
 

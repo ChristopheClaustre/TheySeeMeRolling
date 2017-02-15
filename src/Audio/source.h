@@ -26,6 +26,9 @@ public:
     void pause();
     void stop();
 
+    ALuint getIdSource() { return id_source; }
+    ALuint getState();
+
 private:
     ALuint id_source;
 }; // class Source

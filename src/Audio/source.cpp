@@ -18,6 +18,7 @@ Source::Source(ALuint id_buffer, std::array<ALfloat,3> position, std::array<ALfl
 
 Source::~Source()
 {
+    stop();
     alDeleteSources(1, &id_source);
 }
 
@@ -56,6 +57,12 @@ void Source::pause() {
 
 void Source::stop() {
     alSourceStop(id_source);
+}
+
+ALuint Source::getState() {
+    int state;
+    alGetSourcei(id_source, AL_SOURCE_STATE, &state);
+    return state;
 }
 
 } // namespace Audio

@@ -21,6 +21,9 @@ public:
     void setPitch(ALfloat pitch);
     void setGain(ALfloat gain);
     void setLooping(ALenum looping);
+    void setRolloffFactor(ALfloat factor);
+    void setMaxDistance(ALfloat max);
+    void setReferenceDistance(ALfloat reference);
 
     void play();
     void pause();

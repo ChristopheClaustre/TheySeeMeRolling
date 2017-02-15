@@ -2,14 +2,15 @@ file(
     GLOB_RECURSE
     source_files
     *.cpp
-    *.hpp
+    *.h
     )
 
 file(
     GLOB_RECURSE
     audio_source_files
     Audio/*.cpp
-    Audio/*.hpp
+    Audio/*.h
+    utils.h
     Audio/*.cxx
     )
 
@@ -17,7 +18,8 @@ file(
     GLOB_RECURSE
     video_source_files
     Video/*.cpp
-    Video/*.hpp
+    Video/*.h
+    utils.h
     Video/*.cxx
     )
 

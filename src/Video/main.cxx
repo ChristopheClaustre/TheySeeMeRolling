@@ -11,35 +11,46 @@ using namespace Video;
 int main()
 {
     cout << "Video world!" << endl;
-    VideoCapture PreCap("../misc/TheySeeMe2.avi");
-    if(!PreCap.isOpened())  // check if we succeeded
-        return -1;
 
-    ComputeObjects co(PreCap);
-    co.startCompute();
-
-    int size = co.m_listeObjects[0].m_listeCoordonnees.size();
-    cout << size << endl;
-    for(int i =0;i<size;++i)
-    {
-        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].x<< " " ;
-        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].y<< " " ;
-        std::cout << co.m_listeObjects[0].m_listeCoordonnees[i].z<< endl;
-        std::cout << "Vitesse : ";
-        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].x<< " " ;
-        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].y<< " " ;
-        std::cout << co.m_listeObjects[0].m_listeVecteurVitesse[i].z<< endl;
-    }
-
-
+    Mat frame,fgimg,background,diffimg;
+    vector<Point> ptsDetected;
+    BackgroundSubtractorMOG2 bg(300,36);
+    vector <vector<Point>> contours;
     VideoCapture cap("../misc/TheySeeMe2.avi");
-    Mat frame;
     namedWindow("Film");
     for(;;)
     {
         cap >> frame; // get a new frame from camera
+        if(frame.empty()) break;
+        bg.operator ()(frame,fgimg);
+        //On recupere le background
+        bg.getBackgroundImage(background);
 
-        imshow("Film", frame);
+        cvtColor(background,background,COLOR_RGB2GRAY);
+        fgimg = frame;
+        cvtColor(fgimg,fgimg,COLOR_RGB2GRAY);
+
+        //On blur l'image pour la detection
+        GaussianBlur(fgimg,fgimg,Size(15,15),0);
+        GaussianBlur(background,background,Size(15,15),0);
+
+        absdiff(background,fgimg,diffimg);
+        threshold(diffimg,diffimg,35,255,THRESH_BINARY);
+
+        findContours(diffimg,contours,CV_RETR_EXTERNAL, CV_CHAIN_APPROX_SIMPLE);
+        drawContours(diffimg,contours,-1,255,1);
+
+        int count = countNonZero(diffimg);
+
+        if(count > 0)
+        {
+            findNonZero(diffimg,ptsDetected);
+            cvtColor(diffimg,diffimg,COLOR_GRAY2RGB);
+            Rect box = boundingRect(ptsDetected);
+            rectangle(diffimg,box,Scalar(0,0,255));
+        }
+
+        imshow("Film", diffimg);
         if(waitKey(30) >= 0) break;
     }
     // the camera will be deinitialized automatically in VideoCapture destructor

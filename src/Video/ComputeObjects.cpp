@@ -28,6 +28,7 @@ int ComputeObjects::startCompute()
 //    int radiusCarre = radius*radius;
 //    vector<int> labels;
 //    Mat1b gray;
+
     cout << "Computing...";
     for(;;)
     {
@@ -110,7 +111,6 @@ int ComputeObjects::startCompute()
     }
     return 0;
 }
-
 
 } // namespace Video
 

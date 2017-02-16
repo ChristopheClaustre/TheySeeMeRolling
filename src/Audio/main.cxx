@@ -10,7 +10,7 @@
 
 int main(int argc, char *argv[])
 {
-    cout << "Audio world!" << endl;
+    std::cout << "Audio world!" << std::endl;
 
     ALfloat listenerPos[] = {0.0, 0.0, 0.0};
     Audio::OpenAL::getInstance()->initialize(listenerPos);

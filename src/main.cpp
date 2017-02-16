@@ -77,7 +77,7 @@ int main()
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                     source.setPosition(positionObjet);
-                    source.setVelocity(velociteObjet);
+                    //source.setVelocity(velociteObjet);
                 }
                 else if(frameFromEndObject == 0)
                 {
@@ -90,7 +90,7 @@ int main()
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                     source.setPosition(positionObjet);
-                    source.setVelocity(velociteObjet);
+                    //source.setVelocity(velociteObjet);
                     source.stop();
                 }
                 else if(frameFromBeginObject > 0 && frameFromEndObject < 0)
@@ -109,7 +109,7 @@ int main()
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                     source.setPosition(positionObjet);
-                    source.setVelocity(velociteObjet);
+                    //source.setVelocity(velociteObjet);
                 }
                 frameCount++;
             }

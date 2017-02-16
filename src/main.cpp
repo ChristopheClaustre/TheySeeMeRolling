@@ -17,7 +17,7 @@ int main()
     cout << "Hello world!" << endl;
 
     //Chargement de la video et precalcul
-    VideoCapture PreCap("../misc/TheySeeMe2.avi");
+    VideoCapture PreCap("../misc/Videos/TheySeeMe2.avi");
     if(!PreCap.isOpened())  // check if we succeeded
         return -1;
 
@@ -28,7 +28,7 @@ int main()
 
 
     //Reouverture du fichier video pour recuperation des carateristiques
-    VideoCapture cap("../misc/TheySeeMe2.avi");
+    VideoCapture cap("../misc/Videos/TheySeeMe2.avi");
 
     //Initialisation audio
     ALfloat listenerPos[] = {(ALfloat)cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0,(ALfloat)cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0, 0.0};

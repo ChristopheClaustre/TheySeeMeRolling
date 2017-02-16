@@ -16,7 +16,7 @@ int main()
     vector<Point> ptsDetected;
     BackgroundSubtractorMOG2 bg(300,36);
     vector <vector<Point>> contours;
-    VideoCapture cap("../misc/TheySeeMe2.avi");
+    VideoCapture cap("../misc/Videos/TheySeeMe2.avi");
     namedWindow("Film");
     for(;;)
     {

@@ -12,12 +12,13 @@ using namespace cv;
 using namespace std;
 using namespace Video;
 
-int main()
+int main(int argc, char *argv[])
 {
     cout << "Hello world!" << endl;
 
     //Chargement de la video et precalcul
-    VideoCapture PreCap("../misc/Videos/TheySeeMe2.avi");
+    char* video = argv[1];
+    VideoCapture PreCap(video);
     if(!PreCap.isOpened())  // check if we succeeded
         return -1;
 
@@ -28,11 +29,11 @@ int main()
 
 
     //Reouverture du fichier video pour recuperation des carateristiques
-    VideoCapture cap("../misc/Videos/TheySeeMe2.avi");
+    VideoCapture cap(video);
 
     //Initialisation audio
-    ALfloat listenerPos[] = {(ALfloat)cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0,(ALfloat)cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0, 0.0};
-    cout << "listenerPos : " << (ALfloat)cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0 << " " <<(ALfloat)cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0 << " " << 0.0 << endl;
+    ALfloat listenerPos[] = {(ALfloat)(cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0),(ALfloat)(cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0), 0.0};
+    cout << "listenerPos : " << (ALfloat)(cap.get(CV_CAP_PROP_FRAME_WIDTH)/2.0) << " " <<(ALfloat)(cap.get(CV_CAP_PROP_FRAME_HEIGHT)/2.0) << " " << 0.0 << endl;
 
     Audio::OpenAL::getInstance()->initialize(listenerPos);
 
@@ -62,6 +63,9 @@ int main()
             if(frame.empty()) break;
             for(int i =0 ; i < nombreObject ;i++)
             {
+                std::cout << "Object : " <<i;
+                std::cout << " First frame : " << co.m_listeObjects[i].m_firstFrame;
+                std::cout << " Last frame : " << co.m_listeObjects[i].m_lastFrame  << endl;
                 int frameFromBeginObject = frameCount - co.m_listeObjects[i].m_firstFrame;
                 int frameFromEndObject = frameCount - co.m_listeObjects[i].m_lastFrame;
                 if(frameFromBeginObject == 0)
@@ -71,7 +75,7 @@ int main()
                     source.play();
                     ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000};
+                                               (ALfloat)(co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000)};
                     ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
@@ -84,26 +88,26 @@ int main()
                     //Disparition de l'objet
                     ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0};
+                                               (ALfloat)(co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0)};
                     ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
 
                     source.setPosition(positionObjet);
                     //source.setVelocity(velociteObjet);
-                    source.stop();
+                    source.pause();
                 }
                 else if(frameFromBeginObject > 0 && frameFromEndObject < 0)
                 {
                     std::cout << "Position frame " <<frameCount << " : ";
-                    std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].y<< " " ;
-                    std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].x<< " " ;
-                    std::cout << co.m_listeObjects[0].m_listeCoordonnees[frameFromBeginObject].z/160000.0<< endl;
+                    std::cout << co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y<< " " ;
+                    std::cout << co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x<< " " ;
+                    std::cout << co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0<< endl;
 
 
                     ALfloat positionObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].y,
-                                               (ALfloat)co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0};
+                                               (ALfloat)(co.m_listeObjects[i].m_listeCoordonnees[frameFromBeginObject].z/160000.0)};
                     ALfloat velociteObjet[] = {(ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].x,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].y,
                                                (ALfloat)co.m_listeObjects[i].m_listeVecteurVitesse[frameFromBeginObject].z};
@@ -111,11 +115,12 @@ int main()
                     source.setPosition(positionObjet);
                     //source.setVelocity(velociteObjet);
                 }
-                frameCount++;
             }
+            frameCount++;
             imshow("Film", frame);
             if(waitKey(30) >= 0) break;
         }
+        source.stop();
 
         //Boucle de rejeu
         while(!reponse)

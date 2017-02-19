@@ -24,6 +24,7 @@ int ComputeObjects::startCompute()
 
     int frameCount = 0;
     int objectCount = 0;
+    bool objectIsOnVid = false;
 //    int radius = 50;
 //    int radiusCarre = radius*radius;
 //    vector<int> labels;
@@ -58,15 +59,16 @@ int ComputeObjects::startCompute()
         {
             findNonZero(diffimg,ptsDetected);
 
-            if(objectCount == 0)
+            if(!objectIsOnVid)
             {
                 VideoObject vo(frameCount);
                 m_listeObjects.push_back(vo);
+                objectCount++;
+                objectIsOnVid = true;
             }
-            objectCount = 1;
             Rect box = boundingRect(ptsDetected);
             Point3_<int> newPoint(box.x + box.width/2,box.y + box.height/2,box.area());
-            m_listeObjects[0].m_listeCoordonnees.push_back(newPoint);
+            m_listeObjects[objectCount-1].m_listeCoordonnees.push_back(newPoint);
 
 //            //Cette partie de programme est utile pour le multi objects (NON IMPLEMENTE)
 //            int n_labels = partition(ptsDetected,labels,[radiusCarre](const Point& lhs, const Point& rhs){
@@ -87,10 +89,10 @@ int ComputeObjects::startCompute()
         }
         else
         {
-            if(objectCount == 1)
+            if(objectIsOnVid)
             {
-                m_listeObjects[0].m_lastFrame = frameCount;
-                objectCount = 0;
+                m_listeObjects[objectCount-1].m_lastFrame = frameCount;
+                objectIsOnVid = false;
             }
         }
 

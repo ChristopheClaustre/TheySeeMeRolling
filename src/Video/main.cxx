@@ -8,15 +8,16 @@ using namespace std;
 using namespace Video;
 
 
-int main()
+int main(int argc, char *argv[])
 {
     cout << "Video world!" << endl;
 
+    char* video = argv[1];
     Mat frame,fgimg,background,diffimg;
     vector<Point> ptsDetected;
     BackgroundSubtractorMOG2 bg(300,36);
     vector <vector<Point>> contours;
-    VideoCapture cap("../misc/Videos/TheySeeMe2.avi");
+    VideoCapture cap(video);
     namedWindow("Film");
     for(;;)
     {
